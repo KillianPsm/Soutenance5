@@ -23,31 +23,28 @@ const CarForm: React.FC<{
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col">
-                <label htmlFor="carName" className="text-sm font-medium text-gray-700">Modèle</label>
+        <form onSubmit={handleSubmit} className="px-4 py-1 text-center">
+            <div className="flex flex-col px-4 py-1">
                 <input
                     id="carName"
                     type="text"
-                    placeholder="Nom"
+                    placeholder="Modèle"
                     value={carName}
                     onChange={(e) => setCarName(e.target.value)}
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
             </div>
-            <div className="flex flex-col">
-                <label htmlFor="place" className="text-sm font-medium text-gray-700">Nombre de places</label>
+            <div className="flex flex-col px-4 py-1">
                 <input
                     id="place"
                     type="text"
-                    placeholder="Places"
+                    placeholder="Nombre de places"
                     value={place}
                     onChange={(e) => setPlace(e.target.value)}
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
             </div>
-            <div className="flex flex-col">
-                <label htmlFor="matriculation" className="text-sm font-medium text-gray-700">Immatriculation</label>
+            <div className="flex flex-col px-4 py-1">
                 <input
                     id="matriculation"
                     type="text"
@@ -57,8 +54,7 @@ const CarForm: React.FC<{
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
             </div>
-            <div className="flex flex-col">
-                <label htmlFor="brandId" className="text-sm font-medium text-gray-700">Marque</label>
+            <div className="flex flex-col px-4 py-1">
                 <select
                     id="brandId"
                     value={brandId}
@@ -74,7 +70,7 @@ const CarForm: React.FC<{
             </div>
             <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                className="my-1 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Ajouter
             </button>
         </form>

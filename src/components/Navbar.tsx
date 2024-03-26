@@ -14,23 +14,18 @@ const Navbar = () => {
         <>
             <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gray-800">
                 <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-                    <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+                    <div className="w-full relative flex justify-between sm:w-auto">
                         {isLoggedIn && (
                             <>
                                 <Link to={"/"}
-                                      className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">Home</Link>
+                                      className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">
+                                    Accueil</Link>
                                 <Link to={"/add-trip"}
                                       className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">
-                                    Add a trip</Link>
+                                    Ajouter un trajet</Link>
                                 <Link to={"/my-trips"}
                                       className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">
-                                    My trips</Link>
-                                <Link to={"/cars"}
-                                      className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">Cars</Link>
-                                <Link to={"/brands"}
-                                      className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">Brands</Link>
-                                <Link to={"/cities"}
-                                      className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white">Cities</Link>
+                                    Mes trajets</Link>
                             </>
                         )}
                     </div>
@@ -47,7 +42,7 @@ const Navbar = () => {
                                     <Link to="/profile"
                                           className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                                         <i className="fas fa-user text-lg leading-lg text-white opacity-75"></i><span
-                                        className="ml-2">Profile</span>
+                                        className="ml-2">Profil</span>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
@@ -57,7 +52,7 @@ const Navbar = () => {
                                         onClick={handleLogout}
                                     >
                                         <i className="fab fa-twitter text-lg leading-lg text-white opacity-75"></i><span
-                                        className="ml-2">Logout</span>
+                                        className="ml-2">Déconnexion</span>
                                     </a>
                                 </li>
                             </>

@@ -108,11 +108,10 @@ const Cars: React.FC = () => {
                         {cars.map((car: any, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
-                                <div className="flex-1 flex flex-col p-8">
-                                    <h3 className="mt-6 text-gray-900 text-sm font-medium">{car.model}</h3>
+                                <div className="flex-1 flex flex-col p-3">
+                                    <h3 className="mb-2 text-gray-900 text-sm font-medium">{car.matriculation}</h3>
                                     <ul className="mt-1 flex-grow flex flex-col justify-between">
                                         <li className="text-gray-500 text-sm">{car.model}</li>
-                                        <li className="text-gray-500 text-sm">{car.matriculation}</li>
                                         <li className="text-gray-500 text-sm">{car.user.lastName}</li>
                                     </ul>
                                 </div>

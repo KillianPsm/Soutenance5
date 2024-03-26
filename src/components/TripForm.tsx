@@ -84,20 +84,6 @@ const TripForm: React.FC<{
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-                type="text"
-                placeholder="Distance"
-                value={distance}
-                onChange={(e) => setDistance(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-                type="datetime-local"
-                placeholder="Date du trajet"
-                value={tripDate}
-                onChange={(e) => setTripDate(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
-            />
             <select value={cityStartId} onChange={(e) => setCityStartId(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded">
                 <option value="">Sélectionnez la ville de départ</option>
@@ -108,7 +94,21 @@ const TripForm: React.FC<{
                 <option value="">Sélectionnez la ville d'arrivée</option>
                 {cityArriveOptions}
             </select>
-            <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Ajouter un trajet</button>
+            <input
+                type="datetime-local"
+                placeholder="Date du trajet"
+                value={tripDate}
+                onChange={(e) => setTripDate(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+            />
+            <input
+                type="text"
+                placeholder="Distance"
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+            />
+            <button type="submit" className="w-full p-2 bg-indigo-600 text-white rounded">Ajouter un trajet</button>
             {error && <p className="text-red-500">{error}</p>}
             {success && <p className="text-green-500">{success}</p>}
         </form>
