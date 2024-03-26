@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
-import axios from 'axios';
 import TripForm from '../components/TripForm';
-
-const BASE_URL = 'http://127.0.0.1:8000/api';
+import {apiGet, apiPost} from '../api';
 
 const AddTrip: React.FC = () => {
     useEffect(() => {
@@ -11,23 +9,19 @@ const AddTrip: React.FC = () => {
 
     const fetchTrips = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const response = await axios.get(`${BASE_URL}/trip`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                // Handle the response data as needed
-            }
+            const data = await apiGet('/trip');
+            // Handle the response data as needed
         } catch (error) {
             console.error('Error fetching trips:', error);
         }
     };
 
-    const handleAddTrip = async () => {
+    const handleAddTrip = async (tripData: any) => {
         // Handle trip addition logic here
         try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            await apiPost('/trip', tripData);
             fetchTrips(); // Fetch updated trips after adding a new trip
         } catch (error) {
             console.error('Error adding trip:', error);

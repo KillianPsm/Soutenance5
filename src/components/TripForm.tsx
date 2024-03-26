@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import Select from "react-select";
+import {City} from "../utils/interfaces.tsx";
 
 const BASE_URL = 'http://127.0.0.1:8000/api';
 
-interface City {
-    id: number;
-    cityName: string;
-    // Add other city properties here
+interface SelectOption {
+    value: string;
+    label: string;
 }
 
 const TripForm: React.FC<{
@@ -19,11 +20,23 @@ const TripForm: React.FC<{
 }> = ({onAddTrip}) => {
     const [distance, setDistance] = useState('');
     const [tripDate, setTripDate] = useState('');
-    const [cityStartId, setCityStartId] = useState('');
-    const [cityArriveId, setCityArriveId] = useState('');
+    const [cityStartId, setCityStartId] = useState<SelectOption | null>(null);
+    const [cityArriveId, setCityArriveId] = useState<SelectOption | null>(null);
     const [cities, setCities] = useState<City[]>([]);
-    const [cityStartOptions, setCityStartOptions] = useState<JSX.Element[]>([]);
-    const [cityArriveOptions, setCityArriveOptions] = useState<JSX.Element[]>([]);
+
+    const cityOptions = cities.map((city: City) => ({
+        value: city.id.toString(),
+        label: `${city.cityName} (${city.zipcode})` // Incluez le code postal dans le label
+    }));
+
+    const handleCityStartChange = (selectedOption: SelectOption | null) => {
+        setCityStartId(selectedOption);
+    };
+
+    const handleCityArriveChange = (selectedOption: SelectOption | null) => {
+        setCityArriveId(selectedOption);
+    };
+
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -41,15 +54,10 @@ const TripForm: React.FC<{
                     }
                 });
                 setCities(response.data);
-                const cityOptions = response.data.map((city: any) => (
-                    <option key={city.id} value={city.id}>
-                        {city.cityName}
-                    </option>
-                ));
-                setCityStartOptions(cityOptions);
-                setCityArriveOptions(cityOptions);
             }
         } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             setError('Error fetching cities');
             console.error('Error fetching cities:', error);
         }
@@ -59,9 +67,9 @@ const TripForm: React.FC<{
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            if (token) {
+            if (token && cityStartId && cityArriveId) {
                 await axios.post(
-                    `${BASE_URL}/trip/new/${distance}/${tripDate}/${cityStartId}/${cityArriveId}`,
+                    `${BASE_URL}/trip/new/${distance}/${tripDate}/${cityStartId.value}/${cityArriveId.value}`,
                     {},
                     {
                         headers: {
@@ -69,14 +77,18 @@ const TripForm: React.FC<{
                         }
                     }
                 );
-                onAddTrip({distance, tripDate, cityStartId, cityArriveId});
+                onAddTrip({distance, tripDate, cityStartId: cityStartId.value, cityArriveId: cityArriveId.value});
                 setDistance('');
                 setTripDate('');
-                setCityStartId('');
-                setCityArriveId('');
+                setCityStartId(null);
+                setCityArriveId(null);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 setSuccess('Trip successfully added');
             }
         } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             setError('Error adding trip');
             console.error('Error adding trip:', error);
         }
@@ -84,22 +96,31 @@ const TripForm: React.FC<{
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <select value={cityStartId} onChange={(e) => setCityStartId(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded">
-                <option value="">Sélectionnez la ville de départ</option>
-                {cityStartOptions}
-            </select>
-            <select value={cityArriveId} onChange={(e) => setCityArriveId(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded">
-                <option value="">Sélectionnez la ville d'arrivée</option>
-                {cityArriveOptions}
-            </select>
+            <Select
+                options={cityOptions}
+                onChange={handleCityStartChange}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Sélectionnez la ville de départ"
+                isSearchable={true}
+                required={true}
+                value={cityStartId}
+            />
+            <Select
+                options={cityOptions}
+                onChange={handleCityArriveChange}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="Sélectionnez la ville d'arrivée"
+                isSearchable={true}
+                required={true}
+                value={cityArriveId}
+            />
             <input
                 type="datetime-local"
                 placeholder="Date du trajet"
                 value={tripDate}
                 onChange={(e) => setTripDate(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
+                required={true}
             />
             <input
                 type="text"
@@ -107,6 +128,7 @@ const TripForm: React.FC<{
                 value={distance}
                 onChange={(e) => setDistance(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded"
+                required={true}
             />
             <button type="submit" className="w-full p-2 bg-indigo-600 text-white rounded">Ajouter un trajet</button>
             {error && <p className="text-red-500">{error}</p>}

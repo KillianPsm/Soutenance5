@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {getToken, apiGet, apiDelete} from "../api.ts";
+import {apiGet, apiDelete} from "../api.ts";
+import {Trip} from "../utils/interfaces.tsx";
 
 const MyTrips: React.FC = () => {
-    const [trips, setTrips] = useState<any[]>([]);
-    const [pTrips, setPTrips] = useState<any[]>([]);
+    const [trips, setTrips] = useState<Trip[]>([]);
+    const [pTrips, setPTrips] = useState<Trip[]>([]);
 
     useEffect(() => {
         fetchDrivingTrips();
@@ -49,7 +50,7 @@ const MyTrips: React.FC = () => {
                     <p className="mt-2 text-center text-sm text-gray-600">Aucun trajet trouvé</p>
                 ) : (
                     <ul className="mt-4 mb-8 grid grid-cols-1 gap-6">
-                        {trips.map((trip: any, index: number) => (
+                        {trips.map((trip: Trip, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">
@@ -78,7 +79,7 @@ const MyTrips: React.FC = () => {
                     <p className="mt-2 text-center text-sm text-gray-600">Aucun trajet trouvé</p>
                 ) : (
                     <ul className="my-4 grid grid-cols-1 gap-6">
-                        {pTrips.map((trip: any, index: number) => (
+                        {pTrips.map((trip: Trip, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">

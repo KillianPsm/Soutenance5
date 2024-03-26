@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import CityForm from '../components/CityForm';
-
-const BASE_URL = 'http://127.0.0.1:8000/api';
+import {apiGet, apiPost, apiDelete} from '../api';
+import {City} from "../utils/interfaces.tsx";
 
 const Cities: React.FC = () => {
-    const [cities, setCities] = useState<any[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
 
     useEffect(() => {
         fetchCities();
@@ -13,15 +12,8 @@ const Cities: React.FC = () => {
 
     const fetchCities = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const response = await axios.get(`${BASE_URL}/city`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setCities(response.data);
-            }
+            const data = await apiGet('/city');
+            setCities(data);
         } catch (error) {
             console.error('Error fetching cities:', error);
         }
@@ -29,19 +21,8 @@ const Cities: React.FC = () => {
 
     const handleAddCity = async (cityData: { cityName: string; zipcode: string }) => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                await axios.post(
-                    `${BASE_URL}/city/new/${cityData.cityName}/${cityData.zipcode}`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
-                fetchCities();
-            }
+            await apiPost(`/city/new/${cityData.cityName}/${cityData.zipcode}`, {});
+            fetchCities();
         } catch (error) {
             console.error('Error adding city:', error);
         }
@@ -51,15 +32,8 @@ const Cities: React.FC = () => {
         try {
             const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette ville ?');
             if (confirmDelete) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    await axios.delete(`${BASE_URL}/city/delete/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    fetchCities(); // Mettre à jour la liste des villes après la suppression
-                }
+                await apiDelete(`/city/delete/${id}`);
+                fetchCities(); // Mettre à jour la liste des villes après la suppression
             }
         } catch (error) {
             console.error('Error deleting city:', error);
@@ -75,7 +49,7 @@ const Cities: React.FC = () => {
                     <p className="mt-2 text-center text-sm text-gray-600">Aucune donnée</p>
                 ) : (
                     <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {cities.map((city: any, index: number) => (
+                        {cities.map((city: City, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">

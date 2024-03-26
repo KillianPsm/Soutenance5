@@ -1,24 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import CarForm from '../components/CarForm';
-
-const BASE_URL = 'http://127.0.0.1:8000/api';
+import {apiGet, apiPost, apiDelete} from '../api';
+import {Brand, Car} from "../utils/interfaces.tsx";
 
 const Cars: React.FC = () => {
-    const [cars, setCars] = useState<any[]>([]);
-    const [brands, setBrands] = useState<any[]>([]);
+    const [cars, setCars] = useState<Car[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
 
     const fetchBrands = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const response = await axios.get(`${BASE_URL}/brand`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setBrands(response.data);
-            }
+            const data = await apiGet('/brand');
+            setBrands(data);
         } catch (error) {
             console.error('Error fetching brands:', error);
         }
@@ -34,15 +26,8 @@ const Cars: React.FC = () => {
 
     const fetchCars = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const response = await axios.get(`${BASE_URL}/car`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setCars(response.data);
-            }
+            const data = await apiGet('/car');
+            setCars(data);
         } catch (error) {
             console.error('Error fetching cars:', error);
         }
@@ -59,19 +44,8 @@ const Cars: React.FC = () => {
         brandId: string;
     }) => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                await axios.post(
-                    `${BASE_URL}/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
-                fetchCars();
-            }
+            await apiPost(`/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`, {});
+            fetchCars();
         } catch (error) {
             console.error('Error adding car:', error);
         }
@@ -81,15 +55,8 @@ const Cars: React.FC = () => {
         try {
             const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette voiture ?');
             if (confirmDelete) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    await axios.delete(`${BASE_URL}/car/delete/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    fetchCars();
-                }
+                await apiDelete(`/car/delete/${id}`);
+                fetchCars();
             }
         } catch (error) {
             console.error('Error deleting car:', error);
@@ -105,7 +72,7 @@ const Cars: React.FC = () => {
                     <p className="mt-2 text-center text-sm text-gray-600">Aucune donnée</p>
                 ) : (
                     <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {cars.map((car: any, index: number) => (
+                        {cars.map((car: Car, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">

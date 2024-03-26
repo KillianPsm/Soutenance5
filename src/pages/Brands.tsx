@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import BrandForm from "../components/BrandForm.tsx";
-
-const BASE_URL = 'http://127.0.0.1:8000/api';
+import {apiGet, apiPost, apiDelete} from '../api';
+import {Brand} from "../utils/interfaces.tsx";
 
 const Brands: React.FC = () => {
-    const [brands, setBrands] = useState<any[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
 
     useEffect(() => {
         fetchBrands();
@@ -13,15 +12,8 @@ const Brands: React.FC = () => {
 
     const fetchBrands = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const response = await axios.get(`${BASE_URL}/brand`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setBrands(response.data);
-            }
+            const data = await apiGet('/brand');
+            setBrands(data);
         } catch (error) {
             console.error('Error fetching brands:', error);
         }
@@ -29,40 +21,22 @@ const Brands: React.FC = () => {
 
     const handleAddBrand = async (brandName: string) => {
         try {
-            const token = localStorage.getItem('token');
-            if (token) {
-                await axios.post(
-                    `${BASE_URL}/brand/new/${brandName}`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
-                fetchBrands();
-            }
+            await apiPost(`/brand/new/${brandName}`, {});
+            fetchBrands();
         } catch (error) {
             console.error('Error adding brand:', error);
         }
     };
 
-    const handleDeleteBrand = async (id: number) => {
+    const handleDeleteBrand = async (id: string) => {
         try {
             const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette marque ?');
             if (confirmDelete) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    await axios.delete(`${BASE_URL}/brand/delete/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
-                    fetchBrands();
-                }
+                await apiDelete(`/brand/delete/${id}`);
+                fetchBrands();
             }
         } catch (error) {
-            console.error('Error deleting brand:', error);
+            console.error('Error deleting car:', error);
         }
     };
 
@@ -75,7 +49,7 @@ const Brands: React.FC = () => {
                     <p className="mt-2 text-center text-sm text-gray-600">Aucune donnée</p>
                 ) : (
                     <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {brands.map((brand: any, index: number) => (
+                        {brands.map((brand: Brand, index: number) => (
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">

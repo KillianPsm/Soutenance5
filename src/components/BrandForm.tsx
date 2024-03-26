@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 
-const BrandForm: React.FC<{ onAddBrand: (brandName: string) => void }> = ({onAddBrand}) => {
+const BrandForm: React.FC<{
+    onAddBrand: (brandName: string) => void
+}> = ({onAddBrand}) => {
     const [brandName, setBrandName] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -20,6 +22,7 @@ const BrandForm: React.FC<{ onAddBrand: (brandName: string) => void }> = ({onAdd
                     value={brandName}
                     onChange={(e) => setBrandName(e.target.value)}
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    required={true}
                 />
             </div>
             <button

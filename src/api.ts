@@ -18,10 +18,11 @@ export const apiGet = async (endpoint: string) => {
     }
 };
 
-export const apiPost = async (endpoint: string, data: any) => {
+export const apiPost = async (endpoint: string, data: any, params: any) => {
     const token = localStorage.getItem('token');
     if (token) {
         const response = await axios.post(`${BASE_URL}${endpoint}`, data, {
+            params: params,
             headers: {
                 Authorization: `Bearer ${token}`
             }

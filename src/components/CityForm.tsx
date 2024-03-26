@@ -28,6 +28,7 @@ const CityForm: React.FC<{
                     value={cityName}
                     onChange={(e) => setCityName(e.target.value)}
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    required={true}
                 />
             </div>
             <div className="flex flex-col">
@@ -39,6 +40,7 @@ const CityForm: React.FC<{
                     value={zipcode}
                     onChange={(e) => setZipcode(e.target.value)}
                     className="mt-1 h-8 ps-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    required={true}
                 />
             </div>
             <button

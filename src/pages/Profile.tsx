@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import CarForm from "../components/CarForm.tsx";
-import {apiGet, apiPost, apiDelete, getToken} from '../api';
+import {apiGet, apiPost, apiDelete} from '../api';
+import {Brand} from "../utils/interfaces.tsx";
 
 const Profile: React.FC = () => {
     const [user, setUser] = useState<any | null>(null);
-    const [brands, setBrands] = useState<any[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
     const [hasCar, setHasCar] = useState<boolean | null>(null);
 
     const fetchBrands = async () => {
@@ -53,8 +54,10 @@ const Profile: React.FC = () => {
         brandId: string;
     }) => {
         try {
-            await apiPost(`/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`, {});
-            fetchUserProfile();
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            await apiPost(`/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`); // Assurez-vous que l'URL de l'API est correcte
+            fetchUserProfile(); // Récupérez le profil de l'utilisateur après l'ajout d'une voiture
         } catch (error) {
             console.error('Error adding car:', error);
         }
@@ -137,14 +140,14 @@ const Profile: React.FC = () => {
                                         <h3 className="mb-2 text-gray-900 text-sm font-medium">{user.car.matriculation}</h3>
                                         <ul className="mt-1 flex-grow flex flex-col justify-between">
                                             <li className="text-gray-500 text-sm">{user.car.model}</li>
-                                            <li className="text-gray-500 text-sm">{user.car.brand.name}</li>
+                                            <li className="text-gray-500 text-sm">{user.car.user.lastName}</li>
                                         </ul>
                                     </div>
                                     <div>
                                         <button
                                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-b-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                             type="button"
-                                            onClick={handleDeleteCar}>
+                                            onClick={() => handleDeleteCar(user.car.id)}>
                                             Supprimer
                                         </button>
                                     </div>
