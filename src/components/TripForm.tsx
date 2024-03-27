@@ -130,7 +130,7 @@ const TripForm: React.FC<{
                 className="w-full p-2 border border-gray-300 rounded"
                 required={true}
             />
-            <button type="submit" className="w-full p-2 bg-indigo-600 text-white rounded">Ajouter un trajet</button>
+            <button type="submit" className="w-full p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Ajouter un trajet</button>
             {error && <p className="text-red-500">{error}</p>}
             {success && <p className="text-green-500">{success}</p>}
         </form>

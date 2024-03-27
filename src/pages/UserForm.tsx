@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import {apiGet} from '../api';
 import Select from "react-select";
+import {City} from "../utils/interfaces.tsx";
 
 interface SelectOption {
     value: string;
@@ -19,15 +20,7 @@ const UserForm: React.FC = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchCities = async () => {
-            const response = await apiGet('/city');
-            setCities(response);
-        };
-        fetchCities();
-    }, []);
-
-    const cityOptions = cities.map((city) => ({
+    const cityOptions = cities.map((city: City) => ({
         value: city.id.toString(),
         label: city.cityName
     }));
@@ -65,6 +58,14 @@ const UserForm: React.FC = () => {
             console.error('Erreur lors de la création du profil utilisateur:', error);
         }
     };
+
+    useEffect(() => {
+        const fetchCities = async () => {
+            const response = await apiGet('/city');
+            setCities(response);
+        };
+        fetchCities();
+    }, []);
 
     return (
         <div className="flex flex-col justify-center py-6 sm:px-6 lg:px-8">

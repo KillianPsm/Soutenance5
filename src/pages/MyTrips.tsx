@@ -24,6 +24,7 @@ const MyTrips: React.FC = () => {
         try {
             const data = await apiGet('/user/participates');
             setPTrips(data);
+            console.log('Participating trips:', data);
         } catch (error) {
             console.error('Error fetching user trips:', error);
         }
@@ -41,6 +42,18 @@ const MyTrips: React.FC = () => {
         }
     };
 
+    const handleRemoveParticipation = async (id: number) => {
+        try {
+            const confirmRemove = window.confirm('Voulez vous vraiment vous désinscrire de ce trajet ?');
+            if (confirmRemove) {
+                await apiDelete(`/trip/remove/${id}`);
+                fetchParticipatingTrips();
+            }
+        } catch (error) {
+            console.error('Error removing participation:', error);
+        }
+    };
+
     return (
         <div className="flex flex-col justify-center py-6 sm:px-6 lg:px-8">
             <h2 className="text-center text-3xl font-extrabold text-gray-900">Mes trajets</h2>
@@ -54,9 +67,9 @@ const MyTrips: React.FC = () => {
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">
-                                    <h2 className="mb-2 text-gray-900 font-medium">Trajet {trip.id}</h2>
+                                    <h2 className="text-gray-900 font-medium">{trip.cityStart} &#x279C; {trip.cityArrive}</h2>
                                     <ul className="mt-1 flex-grow flex flex-col justify-between">
-                                        <li className="text-gray-500 text-sm">{trip.cityStart} &#x279C; {trip.cityArrive}, {trip.distance} kms</li>
+                                        <li className="text-gray-500 text-sm">{trip.distance} kms</li>
                                         <li className="text-gray-500 text-sm">Le {trip.tripDate}</li>
                                     </ul>
                                 </div>
@@ -64,7 +77,9 @@ const MyTrips: React.FC = () => {
                                     <button
                                         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-b-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                         type="button"
-                                        onClick={() => handleDeleteTrip(trip.id)}>
+                                        onClick={() =>
+                                            handleDeleteTrip(trip.id)
+                                        }>
                                         Supprimer
                                     </button>
                                 </div>
@@ -83,11 +98,21 @@ const MyTrips: React.FC = () => {
                             <li key={index}
                                 className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                                 <div className="flex-1 flex flex-col p-3">
-                                    <h2 className="mb-2 text-gray-900 font-medium">Trajet {trip.id}</h2>
+                                    <h2 className="text-gray-900 font-medium">{trip.cityStart} &#x279C; {trip.cityArrive}</h2>
                                     <ul className="mt-1 flex-grow flex flex-col justify-between">
-                                        <li className="text-gray-500 text-sm">{trip.cityStart} &#x279C; {trip.cityArrive}, {trip.distance} kms</li>
+                                        <li className="text-gray-500 text-sm">{trip.distance} kms</li>
                                         <li className="text-gray-500 text-sm">Le {trip.tripDate}</li>
                                     </ul>
+                                </div>
+                                <div>
+                                    <button
+                                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-b-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                        type="button"
+                                        onClick={() =>
+                                            handleRemoveParticipation(trip.tripId)
+                                        }>
+                                        Se désinscrire
+                                    </button>
                                 </div>
                             </li>
                         ))}

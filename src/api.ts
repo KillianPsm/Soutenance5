@@ -42,3 +42,15 @@ export const apiDelete = async (endpoint: string) => {
         return response.data;
     }
 };
+
+export const apiPut = async (endpoint: string, data: any) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const response = await axios.put(`${BASE_URL}${endpoint}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    }
+};

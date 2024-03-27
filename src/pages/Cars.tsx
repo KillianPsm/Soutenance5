@@ -44,7 +44,7 @@ const Cars: React.FC = () => {
         brandId: string;
     }) => {
         try {
-            await apiPost(`/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`, {});
+            await apiPost(`/car/new/${carData.carName}/${carData.place}/${carData.matriculation}/${carData.brandId}`, null, {});
             fetchCars();
         } catch (error) {
             console.error('Error adding car:', error);

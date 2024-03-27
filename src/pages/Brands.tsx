@@ -21,7 +21,7 @@ const Brands: React.FC = () => {
 
     const handleAddBrand = async (brandName: string) => {
         try {
-            await apiPost(`/brand/new/${brandName}`, {});
+            await apiPost(`/brand/new/${brandName}`, null, {});
             fetchBrands();
         } catch (error) {
             console.error('Error adding brand:', error);

@@ -21,7 +21,7 @@ const Cities: React.FC = () => {
 
     const handleAddCity = async (cityData: { cityName: string; zipcode: string }) => {
         try {
-            await apiPost(`/city/new/${cityData.cityName}/${cityData.zipcode}`, {});
+            await apiPost(`/city/new/${cityData.cityName}/${cityData.zipcode}`, null, {});
             fetchCities();
         } catch (error) {
             console.error('Error adding city:', error);

@@ -9,7 +9,7 @@ const TripDetails: React.FC = () => {
 
     useEffect(() => {
         fetchTripDetails();
-    }, [id]);
+    }, []);
 
     const fetchTripDetails = async () => {
         try {
@@ -24,7 +24,7 @@ const TripDetails: React.FC = () => {
         try {
             const confirmAdd = window.confirm('Êtes-vous sûr de vouloir vous inscrire à ce trajet ?');
             if (confirmAdd) {
-                await apiPost(`/trip/add/${id}`, null);
+                await apiPost(`/trip/add/${id}`, null, {});
                 fetchTripDetails();
                 alert('Inscription au trajet réussie !');
             }
@@ -57,6 +57,10 @@ const TripDetails: React.FC = () => {
                     </div>
                     <div className="border-t border-gray-200">
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <div className="text-sm font-medium text-gray-500">Places restantes</div>
+                            <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{trip.place}</div>
+                        </div>
+                        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <div className="text-sm font-medium text-gray-500">Distance</div>
                             <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{trip.distance} kms</div>
                         </div>
@@ -81,11 +85,19 @@ const TripDetails: React.FC = () => {
                         </div>
                     </div>
                     <div className="px-4 py-5 sm:px-6">
-                        <button
-                            className="mr-2 px-3 py-1 border rounded-md bg-indigo-600 text-white hover:bg-blue-600"
-                            onClick={handleAddPassenger}>
-                            S'inscrire
-                        </button>
+                        {trip.place > 0 ? (
+                            <button
+                                className="mr-2 px-3 py-1 border rounded-md bg-indigo-600 text-white hover:bg-blue-600"
+                                onClick={handleAddPassenger}>
+                                S'inscrire
+                            </button>
+                        ) : (
+                            <button
+                                className="mr-2 px-3 py-1 border rounded-md bg-gray-400 text-white"
+                                disabled>
+                                Complet
+                            </button>
+                        )}
                         <button
                             className="px-3 py-1 border rounded-md bg-red-500 text-white hover:bg-red-600"
                             onClick={handleRemovePassenger}>

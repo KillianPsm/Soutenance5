@@ -12,6 +12,7 @@ export interface User {
     account: Account;
     city: City;
     Trips: Trip[];
+    car: Car;
 }
 
 export interface Car {
@@ -25,22 +26,25 @@ export interface Car {
 
 export interface Trip {
     id: number;
+    tripId: number;
     distance: number;
     tripDate: string;
     cityStart: string;
     cityArrive: string;
     userDrive: User;
     userPassengers: User[];
-    places: number;
+    place: number;
 }
 
 export interface City {
     id: number;
     cityName: string;
+    name: string;
     zipcode: string;
 }
 
 export interface Brand {
     id: string;
     brandName: string;
+    name: string;
 }

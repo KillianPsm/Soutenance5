@@ -6,12 +6,20 @@ import {useAuth} from '../context/AuthContext.tsx'; // Assurez-vous que le chemi
 const Register: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // Nouveau state pour la confirmation du mot de passe
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const {setIsLoggedIn} = useAuth();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Vérification des mots de passe
+        if (password !== confirmPassword) {
+            setError('Les mots de passe ne correspondent pas.');
+            return;
+        }
+
         try {
             const userData = {login: username, password: password};
             const registerResponse = await axios.post('http://127.0.0.1:8000/api/account/register', userData);
@@ -60,6 +68,17 @@ const Register: React.FC = () => {
                                 id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirmez
+                                le mot de passe:</label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             />
                         </div>

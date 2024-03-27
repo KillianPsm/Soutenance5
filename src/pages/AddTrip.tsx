@@ -1,8 +1,11 @@
 import React, {useEffect} from 'react';
 import TripForm from '../components/TripForm';
 import {apiGet, apiPost} from '../api';
+import {useNavigate} from "react-router-dom";
 
 const AddTrip: React.FC = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetchTrips();
     }, []);
@@ -23,6 +26,7 @@ const AddTrip: React.FC = () => {
             // @ts-expect-error
             await apiPost('/trip', tripData);
             fetchTrips(); // Fetch updated trips after adding a new trip
+            navigate('/my-trips');
         } catch (error) {
             console.error('Error adding trip:', error);
         }
